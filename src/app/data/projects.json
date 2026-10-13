@@ -1,0 +1,79 @@
+[
+  {
+    "id": "project-1",
+    "slug": "waypoint",
+    "title": "Waypoint travel planner",
+    "subtitle": "A clearer path from inspiration to itinerary.",
+    "description": "A mobile travel planning concept that brings saved places, shared itineraries, and trip budgets into one accessible flow.",
+    "category": "Product Design",
+    "tags": [
+      "UX Research",
+      "Interaction Design"
+    ],
+    "year": 2026,
+    "coverImage": "/images/projects/placeholder.svg",
+    "images": [
+      {
+        "src": "/images/projects/placeholder.svg",
+        "alt": "Placeholder for Waypoint travel planner project imagery"
+      }
+    ],
+    "featured": true,
+    "order": 2,
+    "seo": {
+      "title": "Waypoint travel planner",
+      "description": "A mobile travel planning concept that brings saved places, shared itineraries, and trip budgets into one accessible flow."
+    }
+  },
+  {
+    "id": "project-2",
+    "slug": "fieldwork",
+    "title": "Fieldwork coffee identity",
+    "subtitle": "An independent roaster with a local voice.",
+    "description": "A visual identity and packaging system for an independent coffee roaster, designed to make origins and tasting notes easy to navigate.",
+    "category": "Brand Identity",
+    "tags": [
+      "Identity",
+      "Packaging"
+    ],
+    "year": 2026,
+    "coverImage": "/images/projects/placeholder.svg",
+    "images": [
+      {
+        "src": "/images/projects/placeholder.svg",
+        "alt": "Placeholder for Fieldwork coffee identity project imagery"
+      }
+    ],
+    "featured": true,
+    "order": 1,
+    "seo": {
+      "title": "Fieldwork coffee identity",
+      "description": "A visual identity and packaging system for an independent coffee roaster, designed to make origins and tasting notes easy to navigate."
+    }
+  },
+  {
+    "id": "project-3",
+    "slug": "common-ground",
+    "title": "Common Ground journal",
+    "description": "An editorial system for a quarterly journal about public spaces, balancing long-form interviews, photography, and accessible typography.",
+    "category": "Editorial Design",
+    "tags": [
+      "Typography",
+      "Print"
+    ],
+    "year": 2026,
+    "coverImage": "/images/projects/placeholder.svg",
+    "images": [
+      {
+        "src": "/images/projects/placeholder.svg",
+        "alt": "Placeholder for Common Ground journal project imagery"
+      }
+    ],
+    "featured": false,
+    "order": 3,
+    "seo": {
+      "title": "Common Ground journal",
+      "description": "An editorial system for a quarterly journal about public spaces, balancing long-form interviews, photography, and accessible typography."
+    }
+  }
+]

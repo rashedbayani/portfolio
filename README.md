@@ -1,59 +1,68 @@
-# Portfolio
+# Design portfolio foundation
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.3.
+Angular 22 standalone application with lazy pages, strict TypeScript, SCSS, and build-time prerendering. The UI intentionally contains only semantic structure and sample content.
 
-## Development server
+## Architecture
 
-To start a local development server, run:
+- `src/app/core/models`: readonly project and image types.
+- `src/app/core/services`: synchronous JSON-backed project queries and SSR-safe SEO using Angular Title, Meta, and injected DOCUMENT.
+- `src/app/core/config/site.config.json`: shared site name, canonical origin, description, and default social image.
+- `src/app/data/projects.json`: single project dataset used by the application, prerender route discovery, and sitemap generator.
+- `src/app/features`: Home, About, project list/detail, and Not Found; all lazy route components use OnPush and separate HTML/SCSS files.
+- `app.routes.server.ts`: prerenders the routes; `getPrerenderParams()` reads ProjectService and emits every project slug. Unknown slugs have no server fallback.
+- `scripts`: static deployment finalization and generated-output verification.
 
-```bash
-ng serve
+Add shared components/directives/pipes under `src/app/shared` when needed; empty placeholder directories are intentionally omitted. Immutable project data uses synchronous queries; project route changes use a signal and computed project lookup. Existing hydration and server bootstrap remain available for build-time rendering and development. No runtime metadata API or Node production server is needed.
+
+## Development and checks
+
+Use a Node version supported by the installed Angular CLI and the package manager declared in package.json. After cloning, run `npm ci`.
+
+```sh
+npm start
+npm test -- --watch=false
+npm run build
+npm run verify:static
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The development server runs at http://localhost:4200. `npm run build` runs the production Angular build, then writes sitemap.xml, robots.txt, and 404.html into the browser output. Plain `ng build` prerenders all pages but does not run this final packaging script; follow it with `node scripts/finalize-static.mjs` before deployment. Likewise, the watch command only runs Angular's builder.
 
-## Code scaffolding
+The verification script checks every dataset project against its generated HTML, metadata, canonical, images, and sitemap entry. Unit tests cover data queries, metadata cleanup, route reuse, and invalid routes.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+For the optional full discovery integration check, run `node scripts/verify-project-discovery.mjs` with the development server stopped. It temporarily adds a project, builds and verifies its output, then restores the dataset and rebuilds the original output. Do not edit the dataset while this check runs.
 
-```bash
-ng generate component component-name
+## Adding projects
+
+1. Add an entry to `src/app/data/projects.json` matching `Project` in `core/models/project.model.ts`. Give it a unique id and lowercase, hyphen-separated slug (for example `new-project`). Required fields include title, description, category, tags, year, coverImage, images, featured, order, and seo. Subtitle and seo.image are optional.
+2. Store image files in `public/images/projects/`. Use root-relative URLs such as `/images/projects/new-project.webp`. Each gallery image has `src` and descriptive `alt` text. Supply images at their intended aspect ratio; update the detail template dimensions if needed.
+3. Run `npm run build` and `npm run verify:static`. The new URL and sitemap entry are generated automatically. No route list requires editing. Projects sort by ascending order.
+
+The three sample projects are fictional. They share a deliberately plain SVG placeholder, which should be replaced with actual work. Replace the existing favicon in `public/favicon.ico` as well.
+
+## Production domain and SEO
+
+**Before publishing**, replace `https://example.com` in `src/app/core/config/site.config.json` with the production HTTPS origin (no subdirectory), and update the site name, description, and default social image. SEO and the sitemap use this same configuration. Replace placeholder social images with a production-ready raster image. Rebuild after any changes. This setup assumes hosting at the domain root.
+
+Every prerendered page contains its title, description, Open Graph metadata, and canonical URL. Navigation updates one canonical link and resets metadata. Not-found pages carry noindex and are omitted from the sitemap.
+
+## Static hosting and 404s
+
+Deploy only **`dist/portfolio/browser/`**. Serve existing directories through their index.html files, including `/projects/<slug>/index.html`. The output includes `/404/index.html` and a copied `/404.html` for custom error document support.
+
+Configure the host to serve **404.html with HTTP status 404 for missing paths**, including unknown project slugs. Do not rewrite every request to the home page with status 200. Angular's prerender route type does not support a status code, and a wildcard route cannot set an HTTP status on a static host. The explicit `/404` route generates the error document; the client wildcard handles unknown URLs during in-app navigation. Navigating to `/404` itself may return 200 unless the host also configures that path.
+
+For example, an Nginx static host can use:
+
+```nginx
+location / {
+    try_files $uri $uri/ =404;
+}
+error_page 404 /404.html;
+location = /404.html {
+    internal;
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+On managed static hosting, select 404.html as the custom error document and preserve status 404. Check a known project URL and an unknown path after deployment. No hosting provider is selected or configured by this repository.
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Angular's static output guidance: https://angular.dev/guide/hybrid-rendering

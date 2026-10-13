@@ -1,0 +1,20 @@
+@if (project(); as project) {
+  <article>
+    <h1>{{ project.title }}</h1>
+    @if (project.subtitle) {
+      <p>{{ project.subtitle }}</p>
+    }
+    <p>{{ project.description }}</p>
+    <dl>
+      <dt>Category</dt>
+      <dd>{{ project.category }}</dd>
+      <dt>Year</dt>
+      <dd>{{ project.year }}</dd>
+    </dl>
+    @for (image of project.images; track image.src) {
+      <img [src]="image.src" [alt]="image.alt" width="1200" height="800">
+    }
+  </article>
+} @else {
+  <app-not-found />
+}

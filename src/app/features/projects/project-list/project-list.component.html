@@ -1,0 +1,6 @@
+<h1>Projects</h1>
+<ul>
+  @for (project of projects; track project.id) {
+    <li><a [routerLink]="['/projects', project.slug]">{{ project.title }}</a></li>
+  }
+</ul>
