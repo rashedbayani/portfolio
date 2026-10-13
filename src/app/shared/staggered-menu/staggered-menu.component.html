@@ -1,0 +1,117 @@
+<div
+  class="sm-wrapper {{ className() }}"
+  [class.sm-fixed]="isFixed()"
+  [attr.data-position]="position()"
+  [attr.data-open]="open() || null"
+  [style.--sm-accent]="accentColor()"
+>
+  <div class="sm-prelayers" aria-hidden="true">
+    @for (color of layerColors(); track $index) {
+      <div #layer class="sm-prelayer" [style.background]="color"></div>
+    }
+  </div>
+  <header
+    class="sm-header flex items-center justify-between gap-6"
+    aria-label="Main navigation header"
+  >
+    <a
+      class="sm-logo font-heading text-xl sm:text-2xl"
+      routerLink="/"
+      (click)="closeMenu()"
+      [attr.aria-label]="logoLabel() + ' — home'"
+    >
+      @if (logoUrl()) {
+        <img [src]="logoUrl()" [alt]="logoLabel()" width="110" height="32" draggable="false" />
+      } @else {
+        {{ logoLabel() }}
+      }
+    </a>
+    <button
+      #toggle
+      class="sm-toggle"
+      type="button"
+      (click)="toggleMenu()"
+      [style.color]="menuButtonColor()"
+      [attr.aria-expanded]="open()"
+      [attr.aria-controls]="panelId()"
+      [attr.aria-label]="open() ? 'Close menu' : 'Open menu'"
+    >
+      <span class="sm-text-wrap" aria-hidden="true">
+        <span #text class="sm-text-inner">
+          @for (line of textLines(); track $index) {
+            <span class="sm-text-line">{{ line }}</span>
+          }
+        </span>
+      </span>
+      <span #icon class="sm-icon" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </header>
+  <nav
+    #panel
+    [id]="panelId()"
+    class="sm-panel"
+    aria-label="Main navigation"
+    [attr.aria-hidden]="!open()"
+    [attr.inert]="open() ? null : ''"
+  >
+    <div class="flex min-h-full flex-col gap-5">
+      <ul class="m-0 flex list-none flex-col gap-2 p-0">
+        @for (item of items(); track $index) {
+          <li class="sm-item-wrap">
+            @if (isInternal(item.link)) {
+              <a
+                class="sm-item"
+                [routerLink]="item.link"
+                routerLinkActive="sm-active"
+                [routerLinkActiveOptions]="{ exact: item.link === '/' }"
+                ariaCurrentWhenActive="page"
+                [attr.aria-label]="item.ariaLabel || item.label"
+                (click)="closeMenu()"
+              >
+                <span class="sm-item-label">{{ item.label }}</span>
+                @if (displayItemNumbering()) {
+                  <span class="sm-number" aria-hidden="true">{{
+                    ($index + 1).toString().padStart(2, '0')
+                  }}</span>
+                }
+              </a>
+            } @else {
+              <a
+                class="sm-item"
+                [href]="item.link"
+                [attr.aria-label]="item.ariaLabel || item.label"
+                (click)="closeMenu()"
+              >
+                <span class="sm-item-label">{{ item.label }}</span>
+                @if (displayItemNumbering()) {
+                  <span class="sm-number" aria-hidden="true">{{
+                    ($index + 1).toString().padStart(2, '0')
+                  }}</span>
+                }
+              </a>
+            }
+          </li>
+        }
+      </ul>
+      @if (displaySocials() && socialItems().length) {
+        <div class="mt-auto flex flex-col gap-3 pt-8" aria-label="Social links">
+          <h2 class="sm-social-title">Socials</h2>
+          <ul class="sm-social-list m-0 flex list-none flex-wrap items-center gap-4 p-0">
+            @for (social of socialItems(); track $index) {
+              <li>
+                <a
+                  class="sm-social-link"
+                  [href]="social.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  (click)="closeMenu()"
+                  >{{ social.label }}</a
+                >
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </nav>
+</div>

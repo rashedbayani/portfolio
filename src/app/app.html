@@ -1,11 +1,20 @@
 <a class="skip-link button-primary" href="#main-content">Skip to content</a>
-<header class="border-b border-border bg-background">
-  <nav class="site-container flex flex-wrap gap-x-8 gap-y-2 py-4" aria-label="Main navigation">
-    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Home</a>
-    <a class="nav-link" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">About</a>
-    <a class="nav-link" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page">Projects</a>
-  </nav>
-</header>
-<main class="site-container py-12 sm:py-16" id="main-content" tabindex="-1">
+<app-staggered-menu
+  [items]="menuItems"
+  [colors]="menuColors"
+  [logoLabel]="siteName"
+  [isFixed]="true"
+  accentColor="#974414"
+  menuButtonColor="#f5f5f2"
+  openMenuButtonColor="#16120f"
+  (menuOpen)="menuOpen.set(true)"
+  (menuClose)="menuOpen.set(false)"
+/>
+<main
+  class="site-container pt-32 pb-12 sm:pt-40 sm:pb-16"
+  id="main-content"
+  tabindex="-1"
+  [attr.inert]="menuOpen() ? '' : null"
+>
   <router-outlet />
 </main>

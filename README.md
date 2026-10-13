@@ -1,6 +1,14 @@
 # Design portfolio foundation
 
-Angular 22 standalone application with lazy pages, strict TypeScript, SCSS, and build-time prerendering. The UI intentionally contains only semantic structure and sample content.
+Angular 22 standalone application with lazy pages, strict TypeScript, Tailwind, SCSS, and build-time prerendering. The UI includes an animated staggered navigation menu and sample portfolio content.
+
+## Staggered navigation
+
+`src/app/shared/staggered-menu` adapts the supplied React Bits StaggeredMenu to a standalone Angular component with signal inputs, readonly open state, `menuOpen` / `menuClose` outputs, and GSAP. Configure the portfolio links, layer colors, and brand in `app.ts` / `app.html`. Root-relative menu links use Angular Router and preserve active-page semantics; other URLs use normal anchors. Social links are optional and intentionally unconfigured until real profile URLs are available.
+
+The component accepts `position`, `colors`, `items`, `socialItems`, `displaySocials`, `displayItemNumbering`, `logoUrl`, `logoLabel`, `menuButtonColor`, `openMenuButtonColor`, `accentColor`, `changeMenuColorOnOpen`, `isFixed`, `closeOnClickAway`, `className`, and `panelId` as signal inputs. Use a unique `panelId` when rendering multiple menus. Without a logo image it displays the brand text. A non-fixed instance fills its positioned parent; give that parent a size and `position: relative`.
+
+The fixed portfolio menu locks background scrolling, makes the page content inert while open, cycles keyboard focus, and closes on Escape, navigation, or outside pointer clicks. Closed links are inert. GSAP runs in a browser-only render effect, handles interrupted toggles, respects reduced motion, and cleans up on destruction. Layout uses Tailwind utilities; component SCSS supplies the animation geometry and menu-specific styling.
 
 ## Architecture
 
