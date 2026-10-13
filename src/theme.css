@@ -1,0 +1,175 @@
+@import "tailwindcss" source("./app");
+
+@font-face {
+  font-family: "Orpheus";
+  src: url("/fonts/Orpheus.otf") format("opentype");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* Static emits every token for use in component SCSS as well as utilities. */
+@theme static {
+  --font-heading: "Orpheus", Georgia, serif;
+  --color-background: #16120f;
+  --color-surface: #292119;
+  --color-surface-hover: #35291f;
+  --color-accent: #ff9655;
+  --color-accent-hover: #ffad78;
+  --color-accent-muted: #493021;
+  --color-primary: #f5f5f2;
+  --color-secondary: #b9aca1;
+  --color-muted: #84776d;
+  --color-muted-readable: #a99a8e;
+  --color-border: #3d322a;
+  --color-control-border: #84776d;
+  --color-success: #97c99b;
+  --color-warning: #edc477;
+  --color-error: #ff9b91;
+  --color-focus: #ff9655;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    accent-color: var(--color-accent);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background: var(--color-accent-muted);
+    color: var(--color-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  h1 { margin-block: 0 1.25rem; font-size: clamp(2rem, 5vw, 3.5rem); }
+  h2 { margin-block: 2rem 1rem; font-size: 1.5rem; }
+  p { margin-block: 0 1.5rem; max-width: 65ch; color: var(--color-secondary); }
+  small, figcaption { color: var(--color-muted-readable); }
+  a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 0.25em; }
+  hr { border-color: var(--color-border); }
+
+  a, button, input, select, textarea {
+    transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  }
+
+  button, input, select, textarea { font: inherit; }
+  button { cursor: pointer; }
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    border: 1px solid var(--color-control-border);
+    border-radius: 0.25rem;
+  }
+  input::placeholder, textarea::placeholder { color: var(--color-muted-readable); opacity: 1; }
+  :disabled { cursor: not-allowed; color: var(--color-muted); }
+
+  @media (hover: hover) {
+    a:hover { color: var(--color-accent-hover); }
+  }
+}
+
+@layer components {
+  input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+
+  .button-primary, .button-secondary, button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.65rem 1.1rem;
+    border: 1px solid var(--color-control-border);
+    border-radius: 0.25rem;
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .button-primary {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  button:disabled {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-muted);
+    cursor: not-allowed;
+  }
+
+  .project-card {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .project-card img { margin-bottom: 1rem; }
+  .project-card:focus-visible { border-color: var(--color-focus); }
+  .project-card:focus-visible .project-title { text-decoration: underline; text-underline-offset: 0.25em; }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    border-bottom: 2px solid transparent;
+    color: var(--color-secondary);
+    text-decoration: none;
+  }
+  .nav-link[aria-current="page"] {
+    color: var(--color-accent);
+    border-bottom-color: currentColor;
+  }
+
+  @media (hover: hover) {
+    .button-primary:not(:disabled):hover {
+      background-color: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
+      color: var(--color-background);
+    }
+    .button-secondary:not(:disabled):hover, button:not(:disabled):not(.button-primary):hover {
+      background-color: var(--color-surface-hover);
+      border-color: var(--color-accent);
+      color: var(--color-primary);
+    }
+    .project-card:hover {
+      background-color: var(--color-surface-hover);
+      color: var(--color-primary);
+    }
+    .project-card:hover .project-title { text-decoration: underline; text-underline-offset: 0.25em; }
+    .nav-link:hover { color: var(--color-primary); border-bottom-color: currentColor; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}

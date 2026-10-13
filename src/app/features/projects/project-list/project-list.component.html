@@ -1,6 +1,6 @@
 <h1>Projects</h1>
-<ul>
+<ul class="space-y-4" role="list">
   @for (project of projects; track project.id) {
-    <li><a [routerLink]="['/projects', project.slug]">{{ project.title }}</a></li>
+    <li><a class="project-card" [routerLink]="['/projects', project.slug]"><span class="project-title">{{ project.title }}</span></a></li>
   }
 </ul>

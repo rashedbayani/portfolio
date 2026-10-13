@@ -5,14 +5,14 @@
       <p>{{ project.subtitle }}</p>
     }
     <p>{{ project.description }}</p>
-    <dl>
-      <dt>Category</dt>
-      <dd>{{ project.category }}</dd>
-      <dt>Year</dt>
-      <dd>{{ project.year }}</dd>
+    <dl class="mb-8 border-y border-border py-4">
+      <dt class="text-muted-readable">Category</dt>
+      <dd class="mb-3 text-secondary">{{ project.category }}</dd>
+      <dt class="text-muted-readable">Year</dt>
+      <dd class="text-secondary">{{ project.year }}</dd>
     </dl>
     @for (image of project.images; track image.src) {
-      <img [src]="image.src" [alt]="image.alt" width="1200" height="800">
+      <img class="mb-6 rounded-sm border border-border bg-surface" [src]="image.src" [alt]="image.alt" width="1200" height="800">
     }
   </article>
 } @else {

@@ -1,11 +1,11 @@
-<a href="#main-content">Skip to content</a>
-<header>
-  <nav aria-label="Main navigation">
-    <a routerLink="/">Home</a>
-    <a routerLink="/about">About</a>
-    <a routerLink="/projects">Projects</a>
+<a class="skip-link button-primary" href="#main-content">Skip to content</a>
+<header class="border-b border-border bg-background">
+  <nav class="site-container flex flex-wrap gap-x-8 gap-y-2 py-4" aria-label="Main navigation">
+    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Home</a>
+    <a class="nav-link" routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">About</a>
+    <a class="nav-link" routerLink="/projects" routerLinkActive="active" ariaCurrentWhenActive="page">Projects</a>
   </nav>
 </header>
-<main id="main-content" tabindex="-1">
+<main class="site-container py-12 sm:py-16" id="main-content" tabindex="-1">
   <router-outlet />
 </main>

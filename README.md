@@ -66,3 +66,17 @@ location = /404.html {
 On managed static hosting, select 404.html as the custom error document and preserve status 404. Check a known project URL and an unknown path after deployment. No hosting provider is selected or configured by this repository.
 
 Angular's static output guidance: https://angular.dev/guide/hybrid-rendering
+
+## Dark color system
+
+`src/theme.css` owns the palette and reusable UI patterns. Tailwind v4 runs through `.postcssrc.json`; its CSS entry is listed before `src/styles.scss` in angular.json so Sass does not process Tailwind. Component SCSS remains supported. No JavaScript theme state or theme toggle is needed.
+
+The `@theme static` color tokens expose `bg-background`, `bg-surface`, `bg-surface-hover`, `bg-accent`, `bg-accent-muted`, `text-primary`, `text-secondary`, `text-muted`, `text-accent`, `border-border`, and other Tailwind color utilities. Opacity modifiers such as `bg-accent/10` work. Utilities are generated when used in files under `src/app`; use complete class names rather than constructing them dynamically. CSS/SCSS can use the same tokens with `var(--color-accent)`.
+
+Use `.button-primary` for the main call to action, `.button-secondary` for supporting actions, `.project-card` with a `.project-title` for linked project surfaces, and `.nav-link` with `aria-current="page"` for navigation. Keep project imagery unfiltered. The theme also styles native controls, text selection, keyboard focus, and hover feedback; reduced-motion preferences disable transitions. Hover styles apply only to hover-capable devices.
+
+The requested `muted` token (`#84776D`) is retained for disabled text and nonessential decoration. It measures only 4.29:1 on background and 3.65:1 on surface, so **use `text-muted-readable` (`#A99A8E`) for small metadata and captions**. This readable variant exceeds 5:1 across the three dark surfaces. Accent text measures 8.64:1 on background and 7.35:1 on surface. Primary buttons use background-colored text on accent (8.64:1), not white text. The subtle `border` token is decorative; `control-border` provides stronger contrast for input and secondary-button boundaries.
+
+`success`, `warning`, `error`, and `focus` tokens support future states. Pair status colors with descriptive text or an icon; pair invalid inputs with a visible associated error message and `aria-invalid="true"`. Navigation uses an underline as well as accent color, and interactive cards underline their titles on hover/focus. Focus outlines are never removed.
+
+Tailwind theme reference: https://tailwindcss.com/docs/theme
