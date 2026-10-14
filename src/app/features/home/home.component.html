@@ -1,3 +1,46 @@
-<h1 class="text-6xl">Design Portfolio</h1>
-<p>Selected design projects and case studies.</p>
-<a class="button-primary" routerLink="/projects">View projects</a>
+<section
+  #hero
+  class="relative isolate flex min-h-svh flex-col justify-center overflow-clip bg-background px-6 pt-28 pb-12 sm:px-12 sm:pt-32 sm:pb-16 lg:px-16"
+  aria-labelledby="hero-title"
+>
+  <app-plus-grid-background [interactionTarget]="hero" />
+  <div class="relative z-10">
+    <p class="flex items-center gap-3 font-semibold tracking-widest text-primary uppercase">
+      <span class="size-3 bg-accent" aria-hidden="true"></span>Shabnam Kamyar
+    </p>
+    <div class="grid items-center gap-12 xl:grid-cols-3">
+      <h1
+        id="hero-title"
+        class="m-0 font-heading text-6xl leading-tight font-medium tracking-tighter whitespace-nowrap sm:text-6xl lg:text-[10rem] xl:col-span-2 2xl:text-[12rem]"
+      >
+        Better Design.<br />
+        <span class="text-accent">Better Care.</span>
+      </h1>
+      <div class="flex max-w-lg flex-col items-start xl:max-w-sm">
+        <span class="mb-4 h-1 w-20 bg-accent" aria-hidden="true"></span>
+        <p class="mb-6 text-2xl leading-snug font-medium tracking-tight text-primary">
+          Creating purposeful products that improve the way people live, work, and heal.
+        </p>
+        <p class="mb-10 text-base leading-relaxed text-secondary">
+          My approach brings together research, functionality, and refined aesthetics to create
+          products that make a meaningful difference.
+        </p>
+        <a
+          class="inline-flex min-h-14 items-center justify-between gap-6 border border-background bg-accent px-6 py-4 text-sm font-bold text-background no-underline transition hover:bg-accent-hover hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary active:translate-y-1 motion-reduce:transform-none"
+          routerLink="/projects"
+          >Explore Selected Work
+          <svg
+            class="size-6 shrink-0"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path d="M4 12h15M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

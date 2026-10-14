@@ -15,6 +15,12 @@
   transform: translateY(-200%);
 }
 
+// Only the home hero escapes the shared editorial page container.
+.site-container:has(app-home) {
+  width: 100%;
+  padding-block: 0;
+}
+
 .skip-link:focus {
   transform: translateY(0);
 }

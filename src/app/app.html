@@ -1,12 +1,7 @@
 <a class="skip-link button-primary" href="#main-content">Skip to content</a>
 <app-staggered-menu
   [items]="menuItems"
-  [colors]="menuColors"
-  [logoLabel]="siteName"
   [isFixed]="true"
-  accentColor="#974414"
-  menuButtonColor="#f5f5f2"
-  openMenuButtonColor="#16120f"
   (menuOpen)="menuOpen.set(true)"
   (menuClose)="menuOpen.set(false)"
 />

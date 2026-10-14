@@ -1,92 +1,99 @@
 <div
-  class="sm-wrapper {{ className() }}"
-  [class.sm-fixed]="isFixed()"
-  [attr.data-position]="position()"
-  [attr.data-open]="open() || null"
-  [style.--sm-accent]="accentColor()"
+  class="pointer-events-none inset-0 z-40 overflow-clip"
+  [class.fixed]="isFixed()"
+  [class.absolute]="!isFixed()"
+  [class.h-dvh]="isFixed()"
 >
-  <div class="sm-prelayers" aria-hidden="true">
-    @for (color of layerColors(); track $index) {
-      <div #layer class="sm-prelayer" [style.background]="color"></div>
+  <div
+    class="absolute inset-y-0 w-full xl:w-96"
+    [class.left-0]="position() === 'left'"
+    [class.right-0]="position() === 'right'"
+    aria-hidden="true"
+  >
+    @for (layerClass of layerClasses; track $index) {
+      <div #layer class="invisible absolute inset-0" [class]="layerClass"></div>
     }
   </div>
   <header
-    class="sm-header flex items-center justify-between gap-6"
+    class="absolute inset-x-0 top-0 z-20 flex items-center justify-end px-6 py-4"
+    [class.flex-row-reverse]="position() === 'left'"
     aria-label="Main navigation header"
   >
-    <a
-      class="sm-logo font-heading text-xl sm:text-2xl"
-      routerLink="/"
-      (click)="closeMenu()"
-      [attr.aria-label]="logoLabel() + ' — home'"
-    >
-      @if (logoUrl()) {
-        <img [src]="logoUrl()" [alt]="logoLabel()" width="110" height="32" draggable="false" />
-      } @else {
-        {{ logoLabel() }}
-      }
-    </a>
     <button
       #toggle
-      class="sm-toggle"
+      class="pointer-events-auto size-12 rounded-none border-0 bg-transparent p-3 leading-none transition-colors hover:bg-transparent"
+      [class.text-primary]="!open()"
+      [class.text-background]="open()"
       type="button"
       (click)="toggleMenu()"
-      [style.color]="menuButtonColor()"
       [attr.aria-expanded]="open()"
       [attr.aria-controls]="panelId()"
       [attr.aria-label]="open() ? 'Close menu' : 'Open menu'"
     >
-      <span class="sm-text-wrap" aria-hidden="true">
-        <span #text class="sm-text-inner">
-          @for (line of textLines(); track $index) {
-            <span class="sm-text-line">{{ line }}</span>
-          }
-        </span>
+      <span #icon class="relative block size-6" aria-hidden="true">
+        <span class="absolute top-1/2 left-0 h-1 w-full -translate-y-1/2 bg-current"></span>
+        <span
+          class="absolute top-1/2 left-0 h-1 w-full -translate-y-1/2 rotate-90 bg-current"
+        ></span>
       </span>
-      <span #icon class="sm-icon" aria-hidden="true"><span></span><span></span></span>
     </button>
   </header>
   <nav
     #panel
     [id]="panelId()"
-    class="sm-panel"
+    class="invisible absolute inset-y-0 z-10 w-full overflow-y-auto overscroll-contain bg-primary p-8 pt-28 text-background scheme-light xl:w-96"
+    [class.left-0]="position() === 'left'"
+    [class.right-0]="position() === 'right'"
+    [class.pointer-events-auto]="open()"
     aria-label="Main navigation"
     [attr.aria-hidden]="!open()"
     [attr.inert]="open() ? null : ''"
   >
-    <div class="flex min-h-full flex-col gap-5">
+    <div class="flex min-h-full flex-col gap-6">
       <ul class="m-0 flex list-none flex-col gap-2 p-0">
         @for (item of items(); track $index) {
-          <li class="sm-item-wrap">
+          <li class="overflow-hidden p-1 leading-tight">
             @if (isInternal(item.link)) {
               <a
-                class="sm-item"
+                class="relative inline-flex max-w-full gap-2 text-2xl tracking-tighter text-background uppercase hover:text-accent-muted focus-visible:outline-accent-muted focus-visible:-outline-offset-2 lg:text-3xl"
+                #activeLink="routerLinkActive"
+                [class.no-underline]="!activeLink.isActive"
                 [routerLink]="item.link"
-                routerLinkActive="sm-active"
+                routerLinkActive="underline decoration-2 underline-offset-4"
                 [routerLinkActiveOptions]="{ exact: item.link === '/' }"
                 ariaCurrentWhenActive="page"
                 [attr.aria-label]="item.ariaLabel || item.label"
                 (click)="closeMenu()"
               >
-                <span class="sm-item-label">{{ item.label }}</span>
+                <span data-menu-label class="inline-block min-w-0 origin-bottom wrap-anywhere">{{
+                  item.label
+                }}</span>
                 @if (displayItemNumbering()) {
-                  <span class="sm-number" aria-hidden="true">{{
-                    ($index + 1).toString().padStart(2, '0')
-                  }}</span>
+                  <span
+                    data-menu-number
+                    class="pt-1 text-sm font-normal tracking-normal text-accent-muted"
+                    aria-hidden="true"
+                    >{{ ($index + 1).toString().padStart(2, '0') }}</span
+                  >
                 }
               </a>
             } @else {
               <a
-                class="sm-item"
+                class="relative inline-flex max-w-full gap-2 text-4xl font-semibold tracking-tighter text-background uppercase hover:text-accent-muted focus-visible:outline-accent-muted focus-visible:-outline-offset-2 sm:text-5xl"
                 [href]="item.link"
                 [attr.aria-label]="item.ariaLabel || item.label"
                 (click)="closeMenu()"
               >
-                <span class="sm-item-label">{{ item.label }}</span>
+                <span data-menu-label class="inline-block min-w-0 origin-bottom wrap-anywhere">{{
+                  item.label
+                }}</span>
                 @if (displayItemNumbering()) {
-                  <span class="sm-number" aria-hidden="true">{{
-                    ($index + 1).toString().padStart(2, '0')
-                  }}</span>
+                  <span
+                    data-menu-number
+                    class="pt-1 text-sm font-normal tracking-normal text-accent-muted"
+                    aria-hidden="true"
+                    >{{ ($index + 1).toString().padStart(2, '0') }}</span
+                  >
                 }
               </a>
             }
@@ -94,13 +101,16 @@
         }
       </ul>
       @if (displaySocials() && socialItems().length) {
-        <div class="mt-auto flex flex-col gap-3 pt-8" aria-label="Social links">
-          <h2 class="sm-social-title">Socials</h2>
-          <ul class="sm-social-list m-0 flex list-none flex-wrap items-center gap-4 p-0">
+        <div class="mt-auto flex flex-col gap-4 pt-8" aria-label="Social links">
+          <h2 data-menu-social class="m-0 font-sans text-base font-medium text-accent-muted">
+            Socials
+          </h2>
+          <ul class="m-0 flex list-none flex-wrap items-center gap-4 p-0">
             @for (social of socialItems(); track $index) {
               <li>
                 <a
-                  class="sm-social-link"
+                  data-menu-social
+                  class="inline-block text-lg text-background no-underline transition-colors hover:text-accent-muted focus-visible:outline-accent-muted"
                   [href]="social.link"
                   target="_blank"
                   rel="noopener noreferrer"

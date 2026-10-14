@@ -2,7 +2,6 @@ import {
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   DOCUMENT,
   ElementRef,
@@ -33,44 +32,27 @@ export interface StaggeredMenuSocialItem {
   selector: 'app-staggered-menu',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './staggered-menu.component.html',
-  styleUrl: './staggered-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    class: 'block',
     '(document:keydown)': 'onKeydown($event)',
     '(document:pointerdown)': 'onPointerDown($event)',
   },
 })
 export class StaggeredMenuComponent {
   readonly position = input<'left' | 'right'>('right');
-  readonly colors = input<readonly string[]>(['#B497CF', '#5227FF']);
   readonly items = input<readonly StaggeredMenuItem[]>([]);
   readonly socialItems = input<readonly StaggeredMenuSocialItem[]>([]);
   readonly displaySocials = input(true);
   readonly displayItemNumbering = input(true);
-  readonly logoUrl = input('');
-  readonly logoLabel = input('Portfolio');
-  readonly menuButtonColor = input('#fff');
-  readonly openMenuButtonColor = input('#111');
-  readonly accentColor = input('#5227FF');
-  readonly changeMenuColorOnOpen = input(true);
   readonly isFixed = input(false);
   readonly closeOnClickAway = input(true);
-  readonly className = input('');
   readonly panelId = input('staggered-menu-panel');
   readonly menuOpen = output<void>();
   readonly menuClose = output<void>();
   private readonly opened = signal(false);
   readonly open = this.opened.asReadonly();
-  readonly textLines = computed(() =>
-    this.open()
-      ? ['Menu', 'Close', 'Menu', 'Close', 'Close']
-      : ['Close', 'Menu', 'Close', 'Menu', 'Menu'],
-  );
-  readonly layerColors = computed(() => {
-    const colors = this.colors().length ? this.colors().slice(0, 4) : ['#1e1e22', '#35353c'];
-    if (colors.length >= 3) colors.splice(Math.floor(colors.length / 2), 1);
-    return colors;
-  });
+  readonly layerClasses = ['bg-accent-muted', 'bg-accent'];
 
   private readonly document = inject(DOCUMENT);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -78,7 +60,6 @@ export class StaggeredMenuComponent {
   private readonly panel = viewChild.required<ElementRef<HTMLElement>>('panel');
   private readonly toggle = viewChild.required<ElementRef<HTMLButtonElement>>('toggle');
   private readonly icon = viewChild.required<ElementRef<HTMLElement>>('icon');
-  private readonly text = viewChild.required<ElementRef<HTMLElement>>('text');
   private readonly layers = viewChildren<ElementRef<HTMLElement>>('layer');
   private animation?: gsap.core.Timeline;
   private initialized = false;
@@ -96,11 +77,6 @@ export class StaggeredMenuComponent {
       const offscreen = this.position() === 'left' ? -100 : 100;
       const panel = this.panel().nativeElement;
       const layers = this.layers().map((layer) => layer.nativeElement);
-      const button = this.toggle().nativeElement;
-      const color =
-        opening && this.changeMenuColorOnOpen()
-          ? this.openMenuButtonColor()
-          : this.menuButtonColor();
       // Rebuild entrances when rendered navigation content changes.
       this.items();
       this.socialItems();
@@ -108,17 +84,16 @@ export class StaggeredMenuComponent {
       this.displayItemNumbering();
       this.updateScrollLock(opening && this.isFixed());
       this.animation?.kill();
-      const labels = panel.querySelectorAll('.sm-item-label');
-      const numbers = panel.querySelectorAll('.sm-number');
-      const socials = panel.querySelectorAll('.sm-social-title, .sm-social-link');
+      const labels = panel.querySelectorAll('[data-menu-label]');
+      const numbers = panel.querySelectorAll('[data-menu-number]');
+      const socials = panel.querySelectorAll('[data-menu-social]');
       const reduced = this.document.defaultView?.matchMedia?.(
         '(prefers-reduced-motion: reduce)',
       ).matches;
       const immediate = !this.initialized || reduced;
 
       if (!this.initialized) {
-        gsap.set([panel, ...layers], { x: 0, xPercent: offscreen });
-        gsap.set(this.text().nativeElement, { y: 0, yPercent: 0 });
+        gsap.set([panel, ...layers], { x: 0, xPercent: offscreen, visibility: 'visible' });
         this.initialized = true;
       }
       const timeline = gsap.timeline();
@@ -182,17 +157,6 @@ export class StaggeredMenuComponent {
         },
         0,
       );
-      timeline.fromTo(
-        this.text().nativeElement,
-        { yPercent: 0 },
-        {
-          yPercent: -80,
-          duration: 0.85,
-          ease: 'power4.out',
-        },
-        0,
-      );
-      timeline.to(button, { color, duration: 0.3 }, 0.18);
       if (immediate) timeline.progress(1);
     });
     this.destroyRef.onDestroy(() => {
