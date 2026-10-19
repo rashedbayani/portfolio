@@ -1,0 +1,42 @@
+<ng-template #surfaceContent>
+  <canvas
+    class="pointer-events-none absolute -inset-6 z-[1] block h-[calc(100%+48px)] w-[calc(100%+48px)]"
+    aria-hidden="true"
+  ></canvas>
+  <span class="relative z-[2] inline-flex items-center gap-[inherit]"><ng-content /></span>
+</ng-template>
+
+@if (link()) {
+  <a
+    #surface
+    [routerLink]="disabled() ? null : link()"
+    [class]="buttonClasses()"
+    [ngStyle]="inlineStyles()"
+    [attr.id]="id()"
+    [attr.title]="title()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.aria-disabled]="disabled() ? 'true' : null"
+    [attr.tabindex]="disabled() ? -1 : null"
+    [class.opacity-50]="disabled()"
+    [class.cursor-default]="disabled()"
+    (click)="handleClick($event)"
+  >
+    <ng-container [ngTemplateOutlet]="surfaceContent" />
+  </a>
+} @else {
+  <button
+    #surface
+    [type]="type()"
+    [disabled]="disabled()"
+    [class]="buttonClasses()"
+    [ngStyle]="inlineStyles()"
+    [attr.id]="id()"
+    [attr.title]="title()"
+    [attr.aria-label]="ariaLabel()"
+    [attr.name]="name()"
+    [attr.value]="value()"
+    (click)="handleClick($event)"
+  >
+    <ng-container [ngTemplateOutlet]="surfaceContent" />
+  </button>
+}

@@ -4,6 +4,10 @@
   aria-labelledby="hero-title"
 >
   <app-plus-grid-background [interactionTarget]="hero" />
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-64 bg-linear-to-b from-transparent via-background/80 to-background"
+    aria-hidden="true"
+  ></div>
   <div class="relative z-10">
     <p class="flex items-center gap-3 font-semibold tracking-widest text-primary uppercase">
       <span class="size-3 bg-accent" aria-hidden="true"></span>Shabnam Kamyar
@@ -25,10 +29,15 @@
           My approach brings together research, functionality, and refined aesthetics to create
           products that make a meaningful difference.
         </p>
-        <a
-          class="inline-flex min-h-14 items-center justify-between gap-6 border border-background bg-accent px-6 py-4 text-sm font-bold text-background no-underline transition hover:bg-accent-hover hover:text-background focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary active:translate-y-1 motion-reduce:transform-none"
-          routerLink="/projects"
-          >Explore Selected Work
+        <app-specular-button
+          [link]="'/projects'"
+          size="md"
+          [radius]="16"
+          [followMouse]="true"
+          [proximity]="250"
+          [className]="'min-h-14 px-6 py-4 text-sm font-bold no-underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'"
+        >
+          Explore Selected Work
           <svg
             class="size-6 shrink-0"
             aria-hidden="true"
@@ -39,8 +48,83 @@
           >
             <path d="M4 12h15M12 5l7 7-7 7" />
           </svg>
-        </a>
+        </app-specular-button>
       </div>
+    </div>
+  </div>
+</section>
+
+<section
+  class="bg-background px-6 pt-8 pb-20 sm:px-12 sm:pt-12 sm:pb-28 lg:px-16"
+  aria-labelledby="features-title"
+>
+  <div class="mx-auto max-w-7xl">
+    <p class="mb-3 font-semibold tracking-widest text-accent uppercase">A Few Highlights</p>
+    <h2 id="features-title" class="mt-0 mb-10 text-4xl sm:mb-12 sm:text-5xl">
+      A little about my work
+    </h2>
+
+    <div class="grid items-stretch gap-5 md:grid-cols-3 md:gap-6">
+      @for (feature of featureCards; track feature.title) {
+        <app-border-glow
+          class="h-full"
+          [className]="'h-full'"
+          backgroundColor="#201a16"
+          [borderRadius]="32"
+          [glowRadius]="24"
+          [colors]="['#ff9655', '#edc477', '#f5f5f2']"
+          [fillOpacity]="0.16"
+          [animated]="true"
+        >
+          <article class="flex h-full flex-col p-6 sm:p-8">
+            <span
+              class="mb-8 inline-grid size-12 place-items-center bg-accent-muted text-accent"
+              aria-hidden="true"
+            >
+              @switch (feature.icon) {
+                @case ('sparkles') {
+                  <svg
+                    class="size-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Z" />
+                    <path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z" />
+                  </svg>
+                }
+                @case ('compass') {
+                  <svg
+                    class="size-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m15.8 8.2-2.5 5.1-5.1 2.5 2.5-5.1 5.1-2.5Z" />
+                  </svg>
+                }
+                @case ('layers') {
+                  <svg
+                    class="size-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+                    <path d="m3 12 9 5 9-5M3 16l9 5 9-5" />
+                  </svg>
+                }
+              }
+            </span>
+            <h3 class="mt-0 mb-3 text-2xl">{{ feature.title }}</h3>
+            <p class="mb-0 text-base leading-relaxed text-secondary">{{ feature.description }}</p>
+          </article>
+        </app-border-glow>
+      }
     </div>
   </div>
 </section>

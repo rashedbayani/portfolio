@@ -1,0 +1,30 @@
+<div
+  class="relative isolate grid w-full border"
+  #card
+  [class]="wrapperClasses()"
+  [ngStyle]="cardStyles()"
+  (pointermove)="onPointerMove($event)"
+  (pointerenter)="onPointerEnter()"
+  (pointerleave)="onPointerLeave()"
+>
+  <div
+    class="pointer-events-none absolute inset-0 z-0 rounded-[inherit]"
+    aria-hidden="true"
+    [ngStyle]="borderStyles()"
+  ></div>
+  <div
+    class="pointer-events-none absolute inset-0 z-0 rounded-[inherit]"
+    aria-hidden="true"
+    [ngStyle]="fillStyles()"
+  ></div>
+  <span
+    class="pointer-events-none absolute z-20 rounded-[inherit]"
+    aria-hidden="true"
+    [ngStyle]="outerGlowStyles()"
+  >
+    <span class="absolute rounded-[inherit]" [ngStyle]="innerGlowStyles()"></span>
+  </span>
+  <div class="relative z-10 flex flex-col overflow-auto">
+    <ng-content />
+  </div>
+</div>
