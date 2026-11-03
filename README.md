@@ -18,32 +18,26 @@ The fixed portfolio menu locks background scrolling, makes the page content iner
 - `src/app/data/projects.json`: single project dataset used by the application, prerender route discovery, and sitemap generator.
 - `src/app/features`: Home, About, project list/detail, and Not Found; all lazy route components use OnPush and separate HTML/SCSS files.
 - `app.routes.server.ts`: prerenders the routes; `getPrerenderParams()` reads ProjectService and emits every project slug. Unknown slugs have no server fallback.
-- `scripts`: static deployment finalization and generated-output verification.
+- `scripts`: static deployment finalization.
 
 Add shared components/directives/pipes under `src/app/shared` when needed; empty placeholder directories are intentionally omitted. Immutable project data uses synchronous queries; project route changes use a signal and computed project lookup. Existing hydration and server bootstrap remain available for build-time rendering and development. No runtime metadata API or Node production server is needed.
 
-## Development and checks
+## Development and builds
 
 Use a Node version supported by the installed Angular CLI and the package manager declared in package.json. After cloning, run `npm ci`.
 
 ```sh
 npm start
-npm test -- --watch=false
 npm run build
-npm run verify:static
 ```
 
 The development server runs at http://localhost:4200. `npm run build` runs the production Angular build, then writes sitemap.xml, robots.txt, and 404.html into the browser output. Plain `ng build` prerenders all pages but does not run this final packaging script; follow it with `node scripts/finalize-static.mjs` before deployment. Likewise, the watch command only runs Angular's builder.
-
-The verification script checks every dataset project against its generated HTML, metadata, canonical, images, and sitemap entry. Unit tests cover data queries, metadata cleanup, route reuse, and invalid routes.
-
-For the optional full discovery integration check, run `node scripts/verify-project-discovery.mjs` with the development server stopped. It temporarily adds a project, builds and verifies its output, then restores the dataset and rebuilds the original output. Do not edit the dataset while this check runs.
 
 ## Adding projects
 
 1. Add an entry to `src/app/data/projects.json` matching `Project` in `core/models/project.model.ts`. Give it a unique id and lowercase, hyphen-separated slug (for example `new-project`). Required fields include title, description, category, tags, year, coverImage, images, featured, order, and seo. Subtitle and seo.image are optional.
 2. Store image files in `public/images/projects/`. Use root-relative URLs such as `/images/projects/new-project.webp`. Each gallery image has `src` and descriptive `alt` text. Supply images at their intended aspect ratio; update the detail template dimensions if needed.
-3. Run `npm run build` and `npm run verify:static`. The new URL and sitemap entry are generated automatically. No route list requires editing. Projects sort by ascending order.
+3. Run `npm run build`. The new URL and sitemap entry are generated automatically. No route list requires editing. Projects sort by ascending order.
 
 The three sample projects are fictional. They share a deliberately plain SVG placeholder, which should be replaced with actual work. Replace the existing favicon in `public/favicon.ico` as well.
 
@@ -88,3 +82,11 @@ The requested `muted` token (`#84776D`) is retained for disabled text and noness
 `success`, `warning`, `error`, and `focus` tokens support future states. Pair status colors with descriptive text or an icon; pair invalid inputs with a visible associated error message and `aria-invalid="true"`. Navigation uses an underline as well as accent color, and interactive cards underline their titles on hover/focus. Focus outlines are never removed.
 
 Tailwind theme reference: https://tailwindcss.com/docs/theme
+
+## Product anatomy
+
+The homepage's `features/product-anatomy` section loads its Three.js runtime only when it approaches the viewport. Its HTML, readable copy, anatomy description, and original SVG fallback are prerendered. All 19 assemblies are authored procedurally in `three/blood-pressure-monitor.factory.ts`; no external models or textures are fetched.
+
+`product-parts.ts` is the component manifest: assembled/exploded transforms, entry delays, assembly intervals, and hover settings. `ProductAnimation` is the only writer of model transforms. `product-experience.ts` combines the one-time GSAP entry with one ScrollTrigger progress value, which also colors every paragraph word. The final upper housing and final word finish at exactly 1. CSS sticky provides the approximately 200vh scroll sequence without changing page scrolling. `ProductScene` measures each part to frame every intermediate composition, caps pixel ratio, handles context recovery, and disposes GPU resources.
+
+Reduced motion, short viewports, overflowing text layouts, and unavailable WebGL retain a readable static experience. Visual QA should inspect assembled, exploded, midpoint, and completed states on desktop and touch layouts, including scroll restoration and a live reduced-motion preference change.

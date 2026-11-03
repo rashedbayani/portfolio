@@ -1,0 +1,88 @@
+<section
+  #section
+  class="anatomy"
+  [class.is-ready]="ready()"
+  [class.is-static]="staticMode()"
+  aria-labelledby="anatomy-title"
+>
+  <div #stage class="anatomy-stage">
+    <div class="anatomy-topline" aria-hidden="true">
+      <span><i></i> 01 / PRODUCT ANATOMY</span>
+      <span>HEALTHCARE DESIGN STUDY</span>
+    </div>
+
+    <div class="anatomy-heading">
+      <p class="anatomy-eyebrow">DESIGNED FROM WITHIN</p>
+      <h2 id="anatomy-title">Every detail<br /> has a purpose.</h2>
+    </div>
+
+    <figure class="anatomy-visual" aria-describedby="anatomy-summary">
+      <div #viewport class="anatomy-viewport" aria-hidden="true"></div>
+      <div class="anatomy-fallback" aria-hidden="true">
+        <svg viewBox="0 0 620 600" fill="none" focusable="false">
+          <defs>
+            <linearGradient id="anatomy-shell" x1="163" y1="173" x2="427" y2="450" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#f0efea" />
+              <stop offset="1" stop-color="#a6a9a4" />
+            </linearGradient>
+            <linearGradient id="anatomy-edge" x1="338" y1="253" x2="312" y2="462" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#a2a6a1" />
+              <stop offset="1" stop-color="#626960" />
+            </linearGradient>
+            <radialGradient id="anatomy-halo">
+              <stop stop-color="#665441" stop-opacity=".18" />
+              <stop offset="1" stop-color="#16120f" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="310" cy="326" rx="285" ry="245" fill="url(#anatomy-halo)" />
+          <ellipse cx="312" cy="468" rx="140" ry="20" fill="#090806" opacity=".28" />
+          <path d="m157 290 72-102q12-18 35-15l182 37q25 5 23 30l-8 127q-1 19-18 27l-93 53q-15 8-33 1l-143-70q-22-11-21-35Z" fill="url(#anatomy-edge)" />
+          <path d="m158 285 70-111q11-17 33-13l185 38q23 5 21 27l-11 124q-2 18-18 27l-94 52q-14 8-30 0l-143-72q-19-10-16-32Z" fill="url(#anatomy-shell)" stroke="#f3f3ec" stroke-opacity=".4" />
+          <path d="m164 350 153 76q13 7 28 0l104-58" stroke="#4f5650" stroke-opacity=".45" />
+          <path d="m235 199 140 30q13 3 10 17l-16 88q-2 12-14 8l-144-48q-10-3-6-14l21-72q3-11 9-9Z" fill="#303b36" />
+          <path d="m239 210 130 28-15 89-136-44Z" fill="#bdc8b4" />
+          <g fill="#3b4b3d" font-family="monospace" transform="matrix(.94 .24 -.19 1 244 220)">
+            <text y="14" font-size="8">SYS</text>
+            <text x="45" y="30" font-size="31">120</text>
+            <text y="45" font-size="8">DIA</text>
+            <text x="60" y="58" font-size="27">80</text>
+            <text y="75" font-size="8">PULSE</text>
+            <text x="77" y="78" font-size="14">72</text>
+          </g>
+          <ellipse cx="317" cy="368" rx="25" ry="22" transform="rotate(19 317 368)" fill="#404b42" />
+          <ellipse cx="317" cy="365" rx="23" ry="20" transform="rotate(19 317 365)" fill="#e19a6d" />
+          <path d="M317 354v9m-5-6a8 8 0 1 0 10 0" stroke="#50392c" stroke-width="1.5" stroke-linecap="round" />
+          <ellipse cx="263" cy="344" rx="13" ry="10" transform="rotate(20 263 344)" fill="#8e968e" />
+          <ellipse cx="365" cy="389" rx="13" ry="10" transform="rotate(20 365 389)" fill="#8e968e" />
+          <path d="m185 368 14 7m-1-13 14 7m-1-13 14 7" stroke="#626b62" stroke-width="2" stroke-linecap="round" />
+          <ellipse cx="451" cy="322" rx="5" ry="9" fill="#464e46" />
+        </svg>
+      </div>
+      <figcaption class="anatomy-caption">Digital blood pressure monitor <span>— Fictional design study</span></figcaption>
+      <p id="anatomy-summary" class="sr-only">
+        An original digital blood pressure monitor, explored from the inside out. Its rounded polymer
+        enclosure protects the LCD, control buttons, main circuit board, pressure sensor, miniature air
+        pump, pneumatic valves and tubing, battery module, structural frame, and fasteners.
+      </p>
+    </figure>
+
+    <div class="anatomy-copy">
+      <p class="sr-only">{{ paragraph }}</p>
+      <p #copy class="anatomy-paragraph" aria-hidden="true">
+        @for (word of words; track $index) {
+          <span class="reveal-word">{{ word }} </span>
+        }
+      </p>
+      <p class="anatomy-principles">FORM <span>·</span> FUNCTION <span>·</span> PRECISION</p>
+      <div class="anatomy-progress" aria-hidden="true">
+        <div class="anatomy-progress-label"><span #phaseLabel>SCROLL TO EXPLORE</span><span #progressLabel>00%</span></div>
+        <div class="anatomy-progress-track"><span #meter></span></div>
+      </div>
+    </div>
+
+    <div class="anatomy-bottomline" aria-hidden="true">
+      <span>ENCLOSURE / ELECTRONICS / PNEUMATICS</span>
+      <span>ENGINEERED WITH EMPATHY <span class="anatomy-arrow">↓</span></span>
+    </div>
+  </div>
+</section>

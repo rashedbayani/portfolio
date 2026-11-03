@@ -3,6 +3,7 @@ import { SeoService } from '../../core/services/seo.service';
 import { PlusGridBackgroundComponent } from '../../shared/plus-grid-background/plus-grid-background.component';
 import { BorderGlowComponent } from '../../shared/border-glow/border-glow.component';
 import { SpecularButtonComponent } from '../../shared/specular-button/specular-button.component';
+import { ProductAnatomyComponent } from '../product-anatomy/product-anatomy.component';
 
 type FeatureCard = {
   icon: 'sparkles' | 'compass' | 'layers';
@@ -12,7 +13,7 @@ type FeatureCard = {
 
 @Component({
   selector: 'app-home',
-  imports: [PlusGridBackgroundComponent, BorderGlowComponent, SpecularButtonComponent],
+  imports: [PlusGridBackgroundComponent, BorderGlowComponent, SpecularButtonComponent, ProductAnatomyComponent],
   templateUrl: './home.component.html',
   host: { class: 'block' },
   changeDetection: ChangeDetectionStrategy.OnPush,
