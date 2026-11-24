@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build && node scripts/finalize-static.mjs",
+    "build:pages": "ng build --configuration production --base-href /portfolio/ && node scripts/finalize-static.mjs",
+    "check:pages": "node scripts/check-pages.mjs",
     "watch": "ng build --watch --configuration development"
   },
   "private": true,

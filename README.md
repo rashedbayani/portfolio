@@ -24,7 +24,7 @@ Add shared components/directives/pipes under `src/app/shared` when needed; empty
 
 ## Development and builds
 
-Use a Node version supported by the installed Angular CLI and the package manager declared in package.json. After cloning, run `npm ci`.
+Use Node.js 24.15 or newer in the 24.x release line and npm. GitHub Actions uses Node.js 24. After cloning, run `npm ci`.
 
 ```sh
 npm start
@@ -36,18 +36,36 @@ The development server runs at http://localhost:4200. `npm run build` runs the p
 ## Adding projects
 
 1. Add an entry to `src/app/data/projects.json` matching `Project` in `core/models/project.model.ts`. Give it a unique id and lowercase, hyphen-separated slug (for example `new-project`). Required fields include title, description, category, tags, year, coverImage, images, featured, order, and seo. Subtitle and seo.image are optional.
-2. Store image files in `public/images/projects/`. Use root-relative URLs such as `/images/projects/new-project.webp`. Each gallery image has `src` and descriptive `alt` text. Supply images at their intended aspect ratio; update the detail template dimensions if needed.
+2. Store image files in `public/images/projects/`. Use base-relative URLs such as `images/projects/new-project.webp` so they work under `/portfolio/`. Each gallery image has `src` and descriptive `alt` text. Supply images at their intended aspect ratio; update the detail template dimensions if needed.
 3. Run `npm run build`. The new URL and sitemap entry are generated automatically. No route list requires editing. Projects sort by ascending order.
 
 The three sample projects are fictional. They share a deliberately plain SVG placeholder, which should be replaced with actual work. Replace the existing favicon in `public/favicon.ico` as well.
 
 ## Production domain and SEO
 
-**Before publishing**, replace `https://example.com` in `src/app/core/config/site.config.json` with the production HTTPS origin (no subdirectory), and update the site name, description, and default social image. SEO and the sitemap use this same configuration. Replace placeholder social images with a production-ready raster image. Rebuild after any changes. This setup assumes hosting at the domain root.
+The production URL is `https://rashedbayani.github.io/portfolio/`, configured in `src/app/core/config/site.config.json`. Keep the trailing slash; SEO and sitemap paths resolve inside this directory. Update the site name, description, and default social image for the final portfolio content. Replace placeholder social images with a production-ready raster image. Rebuild after changes. For another domain or repository name, update this URL and the `--base-href` argument in `build:pages` together.
 
 Every prerendered page contains its title, description, Open Graph metadata, and canonical URL. Navigation updates one canonical link and resets metadata. Not-found pages carry noindex and are omitted from the sitemap.
 
 ## Static hosting and 404s
+
+### GitHub Pages deployment
+
+The site publishes to **https://rashedbayani.github.io/portfolio/** through `.github/workflows/pages.yml`. Pushes to `main` build and deploy automatically. Pull requests targeting `main` run the same production build and output checks without deploying. You can also run the workflow manually from the Actions tab on `main`.
+
+In repository **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. Private repositories require a GitHub plan that supports Pages for private repositories. The deployment uses the built-in `GITHUB_TOKEN` and OIDC, so no custom deployment secret is needed. Only the deployment job receives `pages: write` and `id-token: write` permissions.
+
+To reproduce deployment checks locally:
+
+```sh
+npm ci
+npm run build:pages
+npm run check:pages
+```
+
+The output check verifies prerendered routes, deployment base paths, referenced local assets, canonical URLs, sitemap entries, robots.txt, and the custom 404 page. GitHub Pages serves `404.html` for unknown URLs. Known pages are prerendered into directories so direct navigation and reloads work without a SPA rewrite.
+
+### Other static hosts
 
 Deploy only **`dist/portfolio/browser/`**. Serve existing directories through their index.html files, including `/projects/<slug>/index.html`. The output includes `/404/index.html` and a copied `/404.html` for custom error document support.
 
@@ -65,7 +83,7 @@ location = /404.html {
 }
 ```
 
-On managed static hosting, select 404.html as the custom error document and preserve status 404. Check a known project URL and an unknown path after deployment. No hosting provider is selected or configured by this repository.
+On other managed static hosting, select 404.html as the custom error document and preserve status 404. Check a known project URL and an unknown path after deployment. Set the build base href and production URL for the chosen host.
 
 Angular's static output guidance: https://angular.dev/guide/hybrid-rendering
 

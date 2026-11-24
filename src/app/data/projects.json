@@ -11,10 +11,10 @@
       "Interaction Design"
     ],
     "year": 2026,
-    "coverImage": "/images/projects/placeholder.svg",
+    "coverImage": "images/projects/placeholder.svg",
     "images": [
       {
-        "src": "/images/projects/placeholder.svg",
+        "src": "images/projects/placeholder.svg",
         "alt": "Placeholder for Waypoint travel planner project imagery"
       }
     ],
@@ -37,10 +37,10 @@
       "Packaging"
     ],
     "year": 2026,
-    "coverImage": "/images/projects/placeholder.svg",
+    "coverImage": "images/projects/placeholder.svg",
     "images": [
       {
-        "src": "/images/projects/placeholder.svg",
+        "src": "images/projects/placeholder.svg",
         "alt": "Placeholder for Fieldwork coffee identity project imagery"
       }
     ],
@@ -62,10 +62,10 @@
       "Print"
     ],
     "year": 2026,
-    "coverImage": "/images/projects/placeholder.svg",
+    "coverImage": "images/projects/placeholder.svg",
     "images": [
       {
-        "src": "/images/projects/placeholder.svg",
+        "src": "images/projects/placeholder.svg",
         "alt": "Placeholder for Common Ground journal project imagery"
       }
     ],
